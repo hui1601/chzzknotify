@@ -1,0 +1,7 @@
+services:
+  app:
+    build: .
+    restart: always
+    env_file: .env
+    volumes:
+      - ./registeredUsers.json:/app/registeredUsers.json
