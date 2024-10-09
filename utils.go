@@ -17,6 +17,7 @@ func sendMessage(bot *tgbotapi.BotAPI, chatID int64, msg tgbotapi.MessageConfig)
 func sendMessageToRegisteredUsers(bot *tgbotapi.BotAPI, text string) {
 	for chatID := range registeredUsers {
 		msg := tgbotapi.NewMessage(chatID, text)
+		msg.ParseMode = tgbotapi.ModeMarkdown
 		sendMessage(bot, chatID, msg)
 	}
 }

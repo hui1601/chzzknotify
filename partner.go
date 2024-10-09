@@ -97,8 +97,10 @@ func checkPartnersUpdates(bot *tgbotapi.BotAPI) {
 				}
 			}
 			if !found {
-				msg := fmt.Sprintf("%s님이 파트너가 되었어요! 축하해요!👏👏\nhttps://chzzk.naver.com/%s",
-					partner.ChannelName, partner.ChannelId)
+				channelName := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, partner.ChannelName)
+				channelID := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, partner.ChannelId)
+				msg := fmt.Sprintf("*%s*님이 파트너가 되었어요! 축하해요!👏👏\nhttps://chzzk.naver.com/%s",
+					channelName, channelID)
 				sendMessageToRegisteredUsers(bot, msg)
 			}
 		}

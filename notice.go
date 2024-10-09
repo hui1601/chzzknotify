@@ -77,9 +77,12 @@ func checkNoticesUpdates(bot *tgbotapi.BotAPI) {
 				if notice.ID == prevNotice.ID {
 					found = true
 					if notice.ModDate != prevNotice.ModDate {
-						msg := fmt.Sprintf("공지가 변경되었어요!\n%s\n작성시간: %s\n변경시간: %s\n링크: %s",
-							getNoticeTitleWithTags(notice), notice.RegDate.Format("2006-01-02 15:04:05"),
-							notice.ModDate.Format("2006-01-02 15:04:05"), notice.ViewUrl)
+						noticeTitle := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, getNoticeTitleWithTags(notice))
+						noticeViewURL := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, notice.ViewUrl)
+						noticeRegistDate := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, notice.RegDate.Format("2006-01-02 15:04:05"))
+						noticeModDate := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, notice.ModDate.Format("2006-01-02 15:04:05"))
+						msg := fmt.Sprintf("공지가 변경되었어요!\n*%s*\n작성시간: %s\n변경시간: %s\n링크: %s",
+							noticeTitle, noticeRegistDate, noticeModDate, noticeViewURL)
 						sendMessageToRegisteredUsers(bot, msg)
 					}
 					break
@@ -87,8 +90,11 @@ func checkNoticesUpdates(bot *tgbotapi.BotAPI) {
 			}
 
 			if !found {
-				msg := fmt.Sprintf("새로운 공지가 있어요!\n%s\n작성시간: %s\n링크: %s",
-					getNoticeTitleWithTags(notice), notice.RegDate.Format("2006-01-02 15:04:05"), notice.ViewUrl)
+				noticeTitle := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, getNoticeTitleWithTags(notice))
+				noticeViewURL := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, notice.ViewUrl)
+				noticeRegistDate := tgbotapi.EscapeText(tgbotapi.ModeMarkdown, notice.RegDate.Format("2006-01-02 15:04:05"))
+				msg := fmt.Sprintf("새로운 공지가 있어요!\n*%s*\n작성시간: %s\n링크: %s",
+					noticeTitle, noticeRegistDate, noticeViewURL)
 				sendMessageToRegisteredUsers(bot, msg)
 			}
 		}
